@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# squared is a proof-of-concept wrapper to extend the functionality of
+# Red Hat's command-line-assistant. It is called 'squared' because
+# by adding the ability to analyzing logs/stderr and explain commands
+# it is exponentially more powerful than the speed of light (c).
+
+function usage {
+cat << EOF
+squared is a wrapper for c. Run 'c -help' for full documentation on the 
+underlying command.
+
+SYNTAX
+  squared [ -a 'COMMAND' | -t 'COMMAND' | -h ]
+
+  -a              Analyze the provided command ONLY.
+  -t              Run the provided command and analzye the failure (log OR stderr).
+  -h              Print this message and exit.
+EOF
+}
+
+function analyze {
+    question="Explain this command:'${command}'."
+
+    c "${question}"
+}
+
+function troubleshoot {
+    set +eo pipefail
+    error=$(${command} 2>&1)
+    set -eo pipefail
+    question="Help me understand and resolve the following error when running '${command}'. Here is the error message: '${error}'"
+
+    c "${question}"
+}
+
+while getopts "a:t:h" arg; do
+    case "${arg}" in
+        a)
+            command=${OPTARG}
+	    analyze
+	    exit 0
+            ;;
+        t)
+            command=${OPTARG}
+	    troubleshoot
+	    exit 0
+            ;;
+        *)
+            usage
+	    exit 0
+            ;;
+    esac
+done
