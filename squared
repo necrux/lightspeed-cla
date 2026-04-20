@@ -3,7 +3,7 @@ set -eo pipefail
 
 # squared is a proof-of-concept wrapper to extend the functionality of
 # Red Hat's command-line-assistant. It is called 'squared' because
-# by adding the ability to analyzing logs/stderr and explain commands
+# by adding the ability to analyze logs/stderr and explain commands
 # it is exponentially more powerful than the speed of light (c).
 
 function usage {
