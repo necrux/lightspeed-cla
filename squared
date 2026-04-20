@@ -48,7 +48,7 @@ while getopts "a:t:h" arg; do
 	    exit 0
             ;;
         *)
-            usage
+	    usage
 	    exit 0
             ;;
     esac
