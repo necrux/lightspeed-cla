@@ -43,7 +43,7 @@ while getopts "a:t:h" arg; do
 	    exit 0
             ;;
         t)
-            command=${OPTARG}
+	    command=${OPTARG}
 	    troubleshoot
 	    exit 0
             ;;
