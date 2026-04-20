@@ -21,7 +21,7 @@ EOF
 }
 
 function analyze {
-    question="Explain this command:'${command}'."
+    question="Explain this command:'${command}'. Are there any dangers associated with this command?"
 
     c "${question}"
 }
