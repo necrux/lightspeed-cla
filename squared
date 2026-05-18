@@ -12,16 +12,23 @@ squared is a wrapper for c. Run 'c -help' for full documentation on the
 underlying command.
 
 SYNTAX
-  squared [ -a 'COMMAND' | -t 'COMMAND' | -h ]
+  squared [ -a 'COMMAND' | -r 'REGEX' | -t 'COMMAND' | -h ]
 
   -a              Analyze the provided command ONLY.
+  -r              Analyze the provided regex.
   -t              Run the provided command and analzye the failure (log OR stderr).
   -h              Print this message and exit.
 EOF
 }
 
-function analyze {
+function analyze-command {
     question="Explain this command:'${command}'. Are there any dangers associated with this command?"
+
+    c "${question}"
+}
+
+function analyze-regex {
+    question="Explain this regex:'${command}'. Are there any dangers associated with this?"
 
     c "${question}"
 }
@@ -43,13 +50,18 @@ function troubleshoot {
     c "${question}"
 }
 
-while getopts "a:t:h" arg; do
+while getopts "a:r:t:h" arg; do
     case "${arg}" in
         a)
             command=${OPTARG}
-	    analyze
+	    analyze-command
 	    exit 0
             ;;
+        r)
+            command=${OPTARG}
+            analyze-regex
+            exit 0
+            ;;	    
         t)
 	    command=${OPTARG}
 	    troubleshoot
