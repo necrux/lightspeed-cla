@@ -28,6 +28,14 @@ function analyze {
 
 function troubleshoot {
     set +eo pipefail
+    if echo "${command}" | grep -q "^journalctl"; then
+      command="${command} --no-pager"
+    elif echo "${command}" | grep -q "^terraform apply"; then
+      command="${command} --auto-approve"
+    elif echo "${command}" | grep -q "^terraform destroy"; then
+      command="${command} --auto-approve"
+    fi
+
     error=$(${command} 2>&1)
     set -eo pipefail
     question="Help me understand and resolve the following error when running '${command}'. Here is the error message: '${error}'"
